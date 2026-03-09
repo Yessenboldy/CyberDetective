@@ -604,70 +604,316 @@
   <div class="container">
     <div class="section-label">05 — Prototype Design</div>
     <h2>Screen <span>Sketches</span></h2>
-    <p class="lead">Early wireframe designs for the core game screens.</p>
-    <div class="mockup-grid">
-      <div class="mockup-frame">
+    <p class="lead">Hand-drawn wireframe designs for the four core game screens — created digitally to show the layout and flow before development begins.</p>
+
+    <!-- SKETCH GRID: 2x2 large -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(460px,1fr)); gap:2rem; margin-top:2.5rem;">
+
+      <!-- SKETCH 1: MAIN MENU -->
+      <div class="mockup-frame" style="padding:0;">
         <div class="mockup-bar">
           <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-          main_menu.py
+          <span style="margin-left:0.5rem;">Screen 1 — Main Menu</span>
         </div>
-        <div class="mockup-body">
-          <div class="mockup-title">Main Menu</div>
-          <div class="mockup-desc">Animated terminal-style title screen with glitch effects. CRT monitor framing. Background shows corrupted data streams.</div>
-          <div class="mockup-elements">
-            <div class="el-box">[ NEW CASE ]</div>
-            <div class="el-box">[ CONTINUE ]</div>
-            <div class="el-box">[ GLOSSARY ]</div>
-            <div class="el-box">[ QUIT ]</div>
-          </div>
+        <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#060d14;">
+          <!-- bg grid -->
+          <defs>
+            <pattern id="g1" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0L0 0 0 20" fill="none" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+            </pattern>
+            <filter id="glow1"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow2"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <rect width="460" height="300" fill="url(#g1)"/>
+          <!-- center glow -->
+          <ellipse cx="230" cy="140" rx="140" ry="80" fill="rgba(0,255,157,0.04)"/>
+          <!-- CYBER DETECTIVE title -->
+          <text x="230" y="68" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(0,212,255,0.5)" letter-spacing="6">// EDUCATIONAL GAME //</text>
+          <text x="230" y="98" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="22" fill="#00ff9d" filter="url(#glow1)" letter-spacing="3">CYBER</text>
+          <text x="230" y="122" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="22" fill="#00d4ff" filter="url(#glow2)" letter-spacing="3">DETECTIVE</text>
+          <!-- divider -->
+          <line x1="130" y1="132" x2="330" y2="132" stroke="rgba(0,212,255,0.3)" stroke-width="0.8"/>
+          <!-- menu buttons -->
+          <rect x="155" y="142" width="150" height="22" rx="2" fill="rgba(0,255,157,0.1)" stroke="#00ff9d" stroke-width="0.8"/>
+          <text x="230" y="157" text-anchor="middle" font-family="monospace" font-size="9" fill="#00ff9d" letter-spacing="2">[ NEW CASE ]</text>
+          <rect x="155" y="170" width="150" height="22" rx="2" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.4)" stroke-width="0.8"/>
+          <text x="230" y="185" text-anchor="middle" font-family="monospace" font-size="9" fill="#00d4ff" letter-spacing="2">[ CONTINUE ]</text>
+          <rect x="155" y="198" width="150" height="22" rx="2" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.4)" stroke-width="0.8"/>
+          <text x="230" y="213" text-anchor="middle" font-family="monospace" font-size="9" fill="#00d4ff" letter-spacing="2">[ GLOSSARY ]</text>
+          <rect x="155" y="226" width="150" height="22" rx="2" fill="rgba(255,60,92,0.05)" stroke="rgba(255,60,92,0.3)" stroke-width="0.8"/>
+          <text x="230" y="241" text-anchor="middle" font-family="monospace" font-size="9" fill="#ff3c5c" letter-spacing="2">[ QUIT ]</text>
+          <!-- corner decorations -->
+          <path d="M10 10 L10 28 M10 10 L28 10" stroke="rgba(0,255,157,0.4)" stroke-width="1.2" fill="none"/>
+          <path d="M450 10 L450 28 M450 10 L432 10" stroke="rgba(0,255,157,0.4)" stroke-width="1.2" fill="none"/>
+          <path d="M10 290 L10 272 M10 290 L28 290" stroke="rgba(0,255,157,0.4)" stroke-width="1.2" fill="none"/>
+          <path d="M450 290 L450 272 M450 290 L432 290" stroke="rgba(0,255,157,0.4)" stroke-width="1.2" fill="none"/>
+          <!-- blinking cursor -->
+          <rect x="236" y="270" width="6" height="10" fill="#00ff9d" opacity="0.8">
+            <animate attributeName="opacity" values="0.8;0;0.8" dur="1.2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="230" y="280" text-anchor="end" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.4)">v0.1-alpha</text>
+        </svg>
+        <div style="padding:0.85rem 1rem; font-family:var(--font-mono); font-size:0.72rem; color:var(--dim); border-top:1px solid var(--border);">
         </div>
       </div>
-      <div class="mockup-frame">
+
+      <!-- SKETCH 2: VICTIM'S ROOM -->
+      <div class="mockup-frame" style="padding:0;">
         <div class="mockup-bar">
           <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-          scene_room.py
+          <span style="margin-left:0.5rem;">Screen 2 — Victim's Room</span>
         </div>
-        <div class="mockup-body">
-          <div class="mockup-title">Victim's Room</div>
-          <div class="mockup-desc">Point-and-click environment. Hotspots glow when hovered. Inventory bar at bottom. Dialogue box overlays for clue reveals.</div>
-          <div class="mockup-elements">
-            <div class="el-box">[ COMPUTER ]</div>
-            <div class="el-box">[ PHONE ]</div>
-            <div class="el-box">[ DOCUMENTS ]</div>
-          </div>
+        <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#060d14;">
+          <defs>
+            <pattern id="g2" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0L0 0 0 20" fill="none" stroke="rgba(0,212,255,0.04)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="460" height="300" fill="url(#g2)"/>
+          <!-- TOP BAR -->
+          <rect x="0" y="0" width="460" height="26" fill="rgba(0,0,0,0.6)"/>
+          <rect x="0" y="0" width="460" height="26" fill="none" stroke="rgba(0,212,255,0.2)" stroke-width="0.5"/>
+          <text x="12" y="17" font-family="monospace" font-size="8" fill="#00ff9d" letter-spacing="1">CASE #001</text>
+          <text x="230" y="17" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.7)" letter-spacing="1">VICTIM'S ROOM — FLOOR 3</text>
+          <text x="448" y="17" text-anchor="end" font-family="monospace" font-size="8" fill="#ff3c5c">⏱ 18:42</text>
+          <!-- ROOM BACKGROUND - floor -->
+          <rect x="0" y="26" width="460" height="200" fill="rgba(8,15,24,0.8)"/>
+          <!-- floor perspective lines -->
+          <line x1="0" y1="200" x2="460" y2="200" stroke="rgba(0,212,255,0.1)" stroke-width="0.8"/>
+          <line x1="0" y1="226" x2="460" y2="226" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+          <!-- DESK -->
+          <rect x="120" y="140" width="200" height="10" rx="1" fill="#0a1a28" stroke="rgba(0,212,255,0.25)" stroke-width="1"/>
+          <rect x="130" y="150" width="8" height="50" fill="#0a1a28" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <rect x="302" y="150" width="8" height="50" fill="#0a1a28" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <!-- MONITOR on desk -->
+          <rect x="175" y="80" width="80" height="60" rx="2" fill="#020810" stroke="#00d4ff" stroke-width="1.2"/>
+          <rect x="178" y="83" width="74" height="50" rx="1" fill="rgba(0,212,255,0.08)"/>
+          <!-- screen content: phishing email visible -->
+          <rect x="182" y="87" width="66" height="6" rx="1" fill="rgba(255,60,92,0.3)"/>
+          <text x="215" y="92" text-anchor="middle" font-family="monospace" font-size="4" fill="#ff3c5c">⚠ SUSPICIOUS EMAIL</text>
+          <rect x="182" y="96" width="50" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+          <rect x="182" y="101" width="60" height="3" rx="1" fill="rgba(255,255,255,0.08)"/>
+          <rect x="182" y="106" width="45" height="3" rx="1" fill="rgba(255,255,255,0.08)"/>
+          <rect x="182" y="111" width="55" height="3" rx="1" fill="rgba(255,255,255,0.08)"/>
+          <rect x="182" y="118" width="66" height="8" rx="1" fill="rgba(0,255,157,0.12)" stroke="rgba(0,255,157,0.4)" stroke-width="0.8"/>
+          <text x="215" y="124" text-anchor="middle" font-family="monospace" font-size="4" fill="#00ff9d">[ EXAMINE ]</text>
+          <!-- monitor stand -->
+          <rect x="208" y="140" width="14" height="8" fill="#0a1a28" stroke="rgba(0,212,255,0.2)" stroke-width="0.8"/>
+          <!-- monitor GLOW hotspot indicator -->
+          <ellipse cx="215" cy="110" rx="44" ry="34" fill="none" stroke="rgba(0,212,255,0.25)" stroke-width="1" stroke-dasharray="3,3">
+            <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+          </ellipse>
+          <!-- PHONE on desk -->
+          <rect x="310" y="128" width="22" height="14" rx="2" fill="#020810" stroke="#ffe347" stroke-width="1"/>
+          <rect x="312" y="130" width="18" height="10" rx="1" fill="rgba(255,227,71,0.08)"/>
+          <text x="321" y="137" text-anchor="middle" font-family="monospace" font-size="4" fill="#ffe347">📱</text>
+          <ellipse cx="321" cy="135" rx="16" ry="10" fill="none" stroke="rgba(255,227,71,0.3)" stroke-width="1" stroke-dasharray="2,2">
+            <animate attributeName="opacity" values="1;0.2;1" dur="2.5s" repeatCount="indefinite"/>
+          </ellipse>
+          <!-- PAPERS on desk -->
+          <rect x="138" y="130" width="28" height="12" rx="1" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8" transform="rotate(-5 152 136)"/>
+          <rect x="140" y="128" width="28" height="12" rx="1" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+          <!-- WINDOW on wall -->
+          <rect x="30" y="50" width="60" height="70" rx="1" fill="rgba(0,212,255,0.04)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+          <line x1="60" y1="50" x2="60" y2="120" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <line x1="30" y1="85" x2="90" y2="85" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <!-- night sky through window -->
+          <rect x="31" y="51" width="28" height="33" fill="rgba(0,0,20,0.5)"/>
+          <rect x="61" y="51" width="28" height="33" fill="rgba(0,0,20,0.5)"/>
+          <circle cx="42" cy="62" r="1" fill="rgba(255,255,255,0.6)"/>
+          <circle cx="75" cy="58" r="1" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="55" cy="70" r="0.8" fill="rgba(255,255,255,0.4)"/>
+          <!-- BOOKSHELF -->
+          <rect x="360" y="60" width="80" height="80" fill="rgba(5,12,20,0.8)" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <rect x="360" y="60" width="80" height="3" fill="rgba(0,212,255,0.1)"/>
+          <rect x="360" y="95" width="80" height="2" fill="rgba(0,212,255,0.08)"/>
+          <rect x="360" y="118" width="80" height="2" fill="rgba(0,212,255,0.08)"/>
+          <!-- books -->
+          <rect x="364" y="64" width="7" height="29" fill="rgba(255,60,92,0.4)"/>
+          <rect x="373" y="67" width="5" height="26" fill="rgba(0,255,157,0.3)"/>
+          <rect x="380" y="64" width="8" height="29" fill="rgba(0,212,255,0.3)"/>
+          <rect x="390" y="66" width="6" height="27" fill="rgba(255,227,71,0.3)"/>
+          <rect x="398" y="64" width="9" height="29" fill="rgba(180,100,255,0.3)"/>
+          <rect x="364" y="98" width="7" height="18" fill="rgba(0,212,255,0.25)"/>
+          <rect x="373" y="100" width="10" height="16" fill="rgba(255,60,92,0.2)"/>
+          <rect x="385" y="98" width="7" height="18" fill="rgba(0,255,157,0.2)"/>
+          <!-- INVENTORY BAR -->
+          <rect x="0" y="226" width="460" height="48" fill="rgba(0,0,0,0.8)" stroke="rgba(0,212,255,0.2)" stroke-width="0.5"/>
+          <text x="12" y="240" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.5)" letter-spacing="1">INVENTORY</text>
+          <!-- inventory slots -->
+          <rect x="12" y="244" width="32" height="24" rx="2" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.3)" stroke-width="0.8"/>
+          <text x="28" y="260" text-anchor="middle" font-family="monospace" font-size="11" fill="rgba(255,60,92,0.9)">📧</text>
+          <rect x="50" y="244" width="32" height="24" rx="2" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <rect x="88" y="244" width="32" height="24" rx="2" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <rect x="126" y="244" width="32" height="24" rx="2" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.15)" stroke-width="0.8"/>
+          <!-- dialogue bubble -->
+          <rect x="100" y="170" width="200" height="48" rx="3" fill="rgba(0,0,0,0.9)" stroke="#00d4ff" stroke-width="1"/>
+          <polygon points="150,218 160,228 170,218" fill="rgba(0,0,0,0.9)" stroke="#00d4ff" stroke-width="1"/>
+          <text x="200" y="188" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.7)" letter-spacing="0.5">VICTIM:</text>
+          <text x="200" y="199" text-anchor="middle" font-family="monospace" font-size="7" fill="#c8d8e8">"Someone hacked my account..."</text>
+          <text x="200" y="210" text-anchor="middle" font-family="monospace" font-size="7" fill="#c8d8e8">"...now they want money."</text>
+          <!-- label annotations -->
+          <text x="215" y="76" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(0,212,255,0.45)">🖥 CLICK TO EXAMINE</text>
+          <text x="321" y="122" text-anchor="middle" font-family="monospace" font-size="6" fill="rgba(255,227,71,0.6)">📱 PHONE</text>
+        </svg>
+        <div style="padding:0.85rem 1rem; font-family:var(--font-mono); font-size:0.72rem; color:var(--dim); border-top:1px solid var(--border);">
         </div>
       </div>
-      <div class="mockup-frame">
+
+      <!-- SKETCH 3: PHISHING MINI-GAME -->
+      <div class="mockup-frame" style="padding:0;">
         <div class="mockup-bar">
           <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-          minigame_phish.py
+          <span style="margin-left:0.5rem;">Screen 3 — Phishing Mini-Game</span>
         </div>
-        <div class="mockup-body">
-          <div class="mockup-title">Phishing Mini-Game</div>
-          <div class="mockup-desc">Player reviews an email. Must identify 3 red flags. Timer adds pressure. Correct answers trigger an educational popup.</div>
-          <div class="mockup-elements">
-            <div class="el-box">[ SAFE ✓ ]</div>
-            <div class="el-box">[ PHISHING ✗ ]</div>
-            <div class="el-box">[ HINT? ]</div>
-          </div>
+        <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#060d14;">
+          <defs>
+            <pattern id="g3" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0L0 0 0 20" fill="none" stroke="rgba(0,212,255,0.04)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="460" height="300" fill="url(#g3)"/>
+          <!-- TOP STATUS BAR -->
+          <rect x="0" y="0" width="460" height="26" fill="rgba(0,0,0,0.7)"/>
+          <text x="12" y="17" font-family="monospace" font-size="8" fill="#ffe347" letter-spacing="1">MINI-GAME: PHISHING DETECTOR</text>
+          <text x="448" y="17" text-anchor="end" font-family="monospace" font-size="8" fill="#ff3c5c">⏱ 00:47</text>
+          <!-- progress bar -->
+          <rect x="0" y="24" width="460" height="3" fill="rgba(0,0,0,0.5)"/>
+          <rect x="0" y="24" width="200" height="3" fill="#ffe347">
+            <animate attributeName="width" from="0" to="200" dur="3s" fill="freeze"/>
+          </rect>
+          <!-- instruction text -->
+          <text x="230" y="48" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.6)" letter-spacing="1">FIND 3 RED FLAGS IN THIS EMAIL</text>
+          <!-- EMAIL CLIENT FRAME -->
+          <rect x="20" y="56" width="420" height="182" rx="3" fill="rgba(4,12,22,0.95)" stroke="rgba(0,212,255,0.25)" stroke-width="1"/>
+          <!-- email header bar -->
+          <rect x="20" y="56" width="420" height="22" rx="3" fill="rgba(0,0,0,0.6)"/>
+          <circle cx="35" cy="67" r="5" fill="rgba(255,60,92,0.6)"/>
+          <circle cx="50" cy="67" r="5" fill="rgba(255,227,71,0.4)"/>
+          <circle cx="65" cy="67" r="5" fill="rgba(0,255,157,0.4)"/>
+          <text x="230" y="71" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.5)">📧 Inbox — CyberDetective Mail</text>
+          <!-- email FROM field — RED FLAG 1 -->
+          <rect x="30" y="84" width="400" height="18" rx="1" fill="rgba(255,60,92,0.06)"/>
+          <text x="40" y="96" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.5)">FROM:</text>
+          <text x="80" y="96" font-family="monospace" font-size="7.5" fill="#ff3c5c">security@bank-secure-login.ru</text>
+          <rect x="78" y="84" width="202" height="18" rx="1" fill="none" stroke="#ff3c5c" stroke-width="1.2" stroke-dasharray="3,2">
+            <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
+          </rect>
+          <text x="290" y="96" font-family="monospace" font-size="7" fill="#ff3c5c">← FLAG #1</text>
+          <!-- email SUBJECT -->
+          <rect x="30" y="106" width="400" height="18" rx="1" fill="rgba(0,0,0,0.2)"/>
+          <text x="40" y="118" font-family="monospace" font-size="7.5" fill="rgba(255,255,255,0.5)">SUBJ: </text>
+          <text x="82" y="118" font-family="monospace" font-size="7.5" fill="#ffe347">⚠ URGENT: Your account will be BLOCKED!</text>
+          <rect x="80" y="106" width="268" height="18" rx="1" fill="none" stroke="#ffe347" stroke-width="1" stroke-dasharray="3,2">
+            <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="358" y="118" font-family="monospace" font-size="7" fill="#ffe347">← FLAG #2</text>
+          <!-- email BODY -->
+          <text x="40" y="138" font-family="monospace" font-size="7.5" fill="rgba(200,216,232,0.7)">Dear Customer,</text>
+          <text x="40" y="151" font-family="monospace" font-size="7.5" fill="rgba(200,216,232,0.7)">We detected suspicious activity. Please verify your</text>
+          <text x="40" y="163" font-family="monospace" font-size="7.5" fill="rgba(200,216,232,0.7)">account immediately by clicking the link below:</text>
+          <!-- suspicious link — RED FLAG 3 -->
+          <text x="40" y="178" font-family="monospace" font-size="7.5" fill="#00d4ff" text-decoration="underline">http://secure-bank-verify.xyz/login?token=A4F92</text>
+          <rect x="38" y="169" width="284" height="15" rx="1" fill="none" stroke="#ff3c5c" stroke-width="1.2" stroke-dasharray="3,2">
+            <animate attributeName="opacity" values="1;0.4;1" dur="1.8s" repeatCount="indefinite"/>
+          </rect>
+          <text x="332" y="180" font-family="monospace" font-size="7" fill="#ff3c5c">← FLAG #3</text>
+          <text x="40" y="196" font-family="monospace" font-size="7.5" fill="rgba(200,216,232,0.5)">Best regards, The Security Team</text>
+          <text x="40" y="208" font-family="monospace" font-size="7.5" fill="rgba(200,216,232,0.3)">© 2024 Bank Security Department</text>
+          <!-- Verdict buttons -->
+          <rect x="40" y="248" width="170" height="32" rx="3" fill="rgba(0,255,157,0.12)" stroke="#00ff9d" stroke-width="1.2"/>
+          <text x="125" y="268" text-anchor="middle" font-family="monospace" font-size="10" fill="#00ff9d" letter-spacing="2">✓ SAFE</text>
+          <rect x="250" y="248" width="170" height="32" rx="3" fill="rgba(255,60,92,0.15)" stroke="#ff3c5c" stroke-width="1.2"/>
+          <text x="335" y="268" text-anchor="middle" font-family="monospace" font-size="10" fill="#ff3c5c" letter-spacing="2">✗ PHISHING</text>
+          <!-- score -->
+          <text x="230" y="292" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.4)">FLAGS FOUND: 2/3  |  SCORE: 860</text>
+        </svg>
+        <div style="padding:0.85rem 1rem; font-family:var(--font-mono); font-size:0.72rem; color:var(--dim); border-top:1px solid var(--border);">
+          
         </div>
       </div>
-      <div class="mockup-frame">
+
+      <!-- SKETCH 4: CASE REPORT -->
+      <div class="mockup-frame" style="padding:0;">
         <div class="mockup-bar">
           <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-          scene_report.py
+          <span style="margin-left:0.5rem;">Screen 4 — Case Report</span>
         </div>
-        <div class="mockup-body">
-          <div class="mockup-title">Case Report Screen</div>
-          <div class="mockup-desc">Player drags collected evidence into a report template. Only complete reports with correct items lead to a successful arrest.</div>
-          <div class="mockup-elements">
-            <div class="el-box">[ SUBMIT ]</div>
-            <div class="el-box">[ EVIDENCE ]</div>
-            <div class="el-box">[ REVIEW ]</div>
-          </div>
+        <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#060d14;">
+          <defs>
+            <pattern id="g4" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0L0 0 0 20" fill="none" stroke="rgba(0,212,255,0.04)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="460" height="300" fill="url(#g4)"/>
+          <!-- top bar -->
+          <rect x="0" y="0" width="460" height="26" fill="rgba(0,0,0,0.7)"/>
+          <text x="12" y="17" font-family="monospace" font-size="8" fill="#00ff9d" letter-spacing="1">CASE REPORT BUILDER — #001</text>
+          <text x="448" y="17" text-anchor="end" font-family="monospace" font-size="8" fill="rgba(0,212,255,0.5)">COMPLETE: 4/6</text>
+          <!-- LEFT PANEL: evidence collected -->
+          <rect x="10" y="32" width="140" height="220" rx="2" fill="rgba(0,0,0,0.5)" stroke="rgba(0,212,255,0.2)" stroke-width="0.8"/>
+          <text x="80" y="46" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.6)" letter-spacing="1">EVIDENCE</text>
+          <line x1="10" y1="50" x2="150" y2="50" stroke="rgba(0,212,255,0.15)" stroke-width="0.5"/>
+          <!-- evidence items -->
+          <rect x="16" y="56" width="128" height="24" rx="2" fill="rgba(255,60,92,0.1)" stroke="rgba(255,60,92,0.4)" stroke-width="0.8"/>
+          <text x="80" y="66" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#ff3c5c">📧 Phishing Email</text>
+          <text x="80" y="76" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(255,60,92,0.6)">bank-secure-login.ru</text>
+          <rect x="16" y="84" width="128" height="24" rx="2" fill="rgba(0,255,157,0.08)" stroke="rgba(0,255,157,0.4)" stroke-width="0.8"/>
+          <text x="80" y="94" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#00ff9d">🌐 IP Address Log</text>
+          <text x="80" y="104" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,255,157,0.6)">185.220.xx.xx — Almaty</text>
+          <rect x="16" y="112" width="128" height="24" rx="2" fill="rgba(255,227,71,0.08)" stroke="rgba(255,227,71,0.3)" stroke-width="0.8"/>
+          <text x="80" y="122" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#ffe347">💬 Ransom Message</text>
+          <text x="80" y="132" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(255,227,71,0.6)">Telegram @h4ck3r_bot</text>
+          <rect x="16" y="140" width="128" height="24" rx="2" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.3)" stroke-width="0.8"/>
+          <text x="80" y="150" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#00d4ff">🔑 Password Hash</text>
+          <text x="80" y="160" text-anchor="middle" font-family="monospace" font-size="5.5" fill="rgba(0,212,255,0.6)">Found in dark web dump</text>
+          <!-- locked items -->
+          <rect x="16" y="168" width="128" height="24" rx="2" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <text x="80" y="182" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">🔒 VPN Node Data</text>
+          <rect x="16" y="196" width="128" height="24" rx="2" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <text x="80" y="210" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">🔒 Suspect Profile</text>
+          <!-- RIGHT PANEL: report form -->
+          <rect x="160" y="32" width="290" height="220" rx="2" fill="rgba(0,0,0,0.4)" stroke="rgba(0,212,255,0.2)" stroke-width="0.8"/>
+          <text x="305" y="46" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.6)" letter-spacing="1">OFFICIAL REPORT — FORM 7A</text>
+          <line x1="160" y1="50" x2="450" y2="50" stroke="rgba(0,212,255,0.15)" stroke-width="0.5"/>
+          <!-- form fields -->
+          <text x="170" y="66" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.4)">ATTACK TYPE:</text>
+          <rect x="255" y="56" width="185" height="14" rx="1" fill="rgba(0,255,157,0.08)" stroke="rgba(0,255,157,0.3)" stroke-width="0.8"/>
+          <text x="347" y="66" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#00ff9d">Phishing / Account Takeover</text>
+          <text x="170" y="84" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.4)">ENTRY POINT:</text>
+          <rect x="255" y="74" width="185" height="14" rx="1" fill="rgba(255,60,92,0.08)" stroke="rgba(255,60,92,0.3)" stroke-width="0.8"/>
+          <text x="347" y="84" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#ff3c5c">bank-secure-login.ru email</text>
+          <text x="170" y="102" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.4)">SUSPECT IP:</text>
+          <rect x="255" y="92" width="185" height="14" rx="1" fill="rgba(0,255,157,0.08)" stroke="rgba(0,255,157,0.3)" stroke-width="0.8"/>
+          <text x="347" y="102" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#00ff9d">185.220.xx.xx (Almaty, KZ)</text>
+          <text x="170" y="120" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.4)">CONTACT:</text>
+          <rect x="255" y="110" width="185" height="14" rx="1" fill="rgba(255,227,71,0.08)" stroke="rgba(255,227,71,0.3)" stroke-width="0.8"/>
+          <text x="347" y="120" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#ffe347">@h4ck3r_bot (Telegram)</text>
+          <!-- missing fields -->
+          <text x="170" y="138" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.4)">VPN NODE:</text>
+          <rect x="255" y="128" width="185" height="14" rx="1" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" stroke-dasharray="2,2"/>
+          <text x="347" y="138" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">[ MISSING — FIND EVIDENCE ]</text>
+          <text x="170" y="156" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.4)">SUSPECT ID:</text>
+          <rect x="255" y="146" width="185" height="14" rx="1" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" stroke-dasharray="2,2"/>
+          <text x="347" y="156" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,255,255,0.2)">[ MISSING — FIND EVIDENCE ]</text>
+          <!-- completion indicator -->
+          <rect x="168" y="172" width="274" height="8" rx="2" fill="rgba(0,0,0,0.5)" stroke="rgba(0,212,255,0.2)" stroke-width="0.5"/>
+          <rect x="168" y="172" width="183" height="8" rx="2" fill="rgba(0,255,157,0.4)"/>
+          <text x="305" y="192" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(0,212,255,0.5)">REPORT COMPLETENESS: 66%</text>
+          <!-- submit button (disabled) -->
+          <rect x="220" y="200" width="170" height="28" rx="3" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <text x="305" y="218" text-anchor="middle" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.2)" letter-spacing="2">SUBMIT REPORT</text>
+          <text x="305" y="238" text-anchor="middle" font-family="monospace" font-size="6.5" fill="rgba(255,60,92,0.5)">⚠ Missing 2 pieces of evidence</text>
+          <!-- bottom area -->
+          <text x="230" y="270" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.3)">DRAG EVIDENCE FROM LEFT PANEL → DROP INTO FIELDS</text>
+          <text x="230" y="284" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.15)">Complete all fields to unlock SUBMIT</text>
+        </svg>
+        <div style="padding:0.85rem 1rem; font-family:var(--font-mono); font-size:0.72rem; color:var(--dim); border-top:1px solid var(--border);">
+          
         </div>
       </div>
-    </div>
+
+    </div><!-- end sketch grid -->
   </div>
 </section>
 
