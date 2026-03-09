@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CyberDetective — Uncover the Truth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #050a0f;
+      --bg2: #080f18;
+      --green: #00ff9d;
+      --cyan: #00d4ff;
+      --red: #ff3c5c;
+      --yellow: #ffe347;
+      --text: #c8d8e8;
+      --dim: #4a6070;
+      --card: rgba(0,212,255,0.04);
+      --border: rgba(0,212,255,0.15);
+      --font-head: 'Orbitron', monospace;
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-body: 'Exo 2', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* SCANLINE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 1000; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+      animation: scanroll 8s linear infinite;
+    }
+    @keyframes scanroll { from { background-position: 0 0; } to { background-position: 0 400px; } }
+
+    /* NOISE GRAIN */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(5,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 900;
+      color: var(--green); letter-spacing: 0.15em;
+    }
+    .nav-logo span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 0.78rem; color: var(--dim);
+      text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-glow {
+      position: absolute; width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(0,255,157,0.07) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      animation: pulse 5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; } 50% { transform: translate(-50%,-50%) scale(1.2); opacity: 1; } }
+
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: var(--green); border: 1px solid var(--green);
+      padding: 0.3rem 1rem; border-radius: 2px;
+      letter-spacing: 0.2em; margin-bottom: 2rem;
+      animation: blink-badge 3s step-end infinite;
+    }
+    @keyframes blink-badge { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    h1 {
+      font-family: var(--font-head); font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 900; line-height: 1;
+      color: #fff; margin-bottom: 0.5rem;
+      text-shadow: 0 0 60px rgba(0,212,255,0.4);
+    }
+    h1 .accent { color: var(--cyan); display: block; }
+
+    .hero-sub {
+      font-family: var(--font-mono); font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      color: var(--green); letter-spacing: 0.1em; margin-bottom: 1.5rem;
+    }
+
+    .hero-desc {
+      max-width: 620px; font-size: 1.05rem; line-height: 1.8;
+      color: var(--text); margin: 0 auto 2.5rem;
+    }
+
+    .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.15em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 0.85rem 2rem; border-radius: 2px; cursor: pointer;
+      transition: all 0.25s; position: relative; overflow: hidden;
+    }
+    .btn-primary {
+      background: var(--green); color: #050a0f; border: none; font-weight: 700;
+    }
+    .btn-primary:hover { background: #fff; box-shadow: 0 0 30px rgba(0,255,157,0.5); }
+    .btn-secondary {
+      background: transparent; color: var(--cyan); border: 1px solid var(--cyan);
+    }
+    .btn-secondary:hover { background: rgba(0,212,255,0.1); box-shadow: 0 0 20px rgba(0,212,255,0.3); }
+
+    .terminal-tag {
+      position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .terminal-tag::before { content: '>_'; color: var(--green); }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 6rem 2rem; position: relative; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.25em;
+      color: var(--green); text-transform: uppercase; margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--green); opacity: 0.3; }
+
+    h2 {
+      font-family: var(--font-head); font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      font-weight: 700; color: #fff; margin-bottom: 1rem;
+    }
+    h2 span { color: var(--cyan); }
+
+    .lead { font-size: 1.1rem; line-height: 1.9; color: var(--text); max-width: 750px; margin-bottom: 2.5rem; }
+
+    /* ===== FEATURES GRID ===== */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 2.5rem;
+    }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 2rem; border-radius: 4px; position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .feature-card:hover { border-color: var(--cyan); transform: translateY(-4px); }
+    .feature-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .feature-card h3 {
+      font-family: var(--font-head); font-size: 0.9rem; font-weight: 700;
+      color: var(--cyan); letter-spacing: 0.1em; margin-bottom: 0.75rem;
+    }
+    .feature-card p { font-size: 0.92rem; line-height: 1.7; color: var(--text); }
+
+    /* ===== STORY / PLOT ===== */
+    .story-section { background: var(--bg2); }
+
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    @media (max-width: 760px) { .story-grid { grid-template-columns: 1fr; } }
+
+    .story-steps { display: flex; flex-direction: column; gap: 1.5rem; }
+    .step {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.25rem; border: 1px solid var(--border);
+      background: var(--card); border-radius: 4px; transition: border-color 0.3s;
+    }
+    .step:hover { border-color: var(--green); }
+    .step-num {
+      font-family: var(--font-mono); font-size: 1.4rem; font-weight: 700;
+      color: var(--green); min-width: 2.5rem; line-height: 1;
+    }
+    .step-text h4 {
+      font-family: var(--font-head); font-size: 0.82rem; color: #fff;
+      margin-bottom: 0.4rem; letter-spacing: 0.08em;
+    }
+    .step-text p { font-size: 0.88rem; line-height: 1.6; color: var(--dim); }
+
+    .case-file {
+      background: rgba(0,0,0,0.4); border: 1px solid var(--red);
+      border-radius: 4px; padding: 2rem; position: relative;
+    }
+    .case-file-header {
+      font-family: var(--font-mono); font-size: 0.7rem; color: var(--red);
+      letter-spacing: 0.2em; margin-bottom: 1.5rem; display: flex; gap: 1rem;
+    }
+    .case-file h3 {
+      font-family: var(--font-head); font-size: 1rem; color: #fff; margin-bottom: 1rem;
+    }
+    .case-file p { font-size: 0.88rem; line-height: 1.8; color: var(--text); margin-bottom: 1rem; }
+    .evidence-list { list-style: none; }
+    .evidence-list li {
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--yellow);
+      padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .evidence-list li::before { content: '►'; color: var(--red); font-size: 0.6rem; }
+
+    /* ===== TECH ===== */
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.25rem; margin-top: 2.5rem; }
+    .tech-card {
+      border: 1px solid var(--border); background: var(--card);
+      padding: 1.5rem; border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+    .tech-card:hover { border-color: var(--yellow); }
+    .tech-card h4 {
+      font-family: var(--font-mono); font-size: 0.72rem; color: var(--yellow);
+      letter-spacing: 0.15em; margin-bottom: 0.75rem; text-transform: uppercase;
+    }
+    .tech-pill {
+      display: inline-block; font-family: var(--font-mono); font-size: 0.72rem;
+      color: var(--text); background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); padding: 0.25rem 0.65rem;
+      border-radius: 2px; margin: 0.2rem;
+    }
+
+    /* ===== FUNCTIONAL REQUIREMENTS ===== */
+    .req-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+    @media (max-width: 640px) { .req-grid { grid-template-columns: 1fr; } }
+    .req-group h4 {
+      font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);
+      letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    .req-item {
+      display: flex; gap: 0.75rem; margin-bottom: 0.7rem; align-items: flex-start;
+    }
+    .req-check { color: var(--green); font-size: 0.9rem; margin-top: 0.05rem; flex-shrink: 0; }
+    .req-item p { font-size: 0.88rem; line-height: 1.6; color: var(--text); }
+
+    /* ===== SKETCH / PROTOTYPE ===== */
+    .prototype-section { background: var(--bg2); }
+    .mockup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .mockup-frame {
+      border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+      background: var(--card); transition: border-color 0.3s;
+    }
+    .mockup-frame:hover { border-color: var(--green); }
+    .mockup-bar {
+      background: rgba(0,212,255,0.08); padding: 0.6rem 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 0.68rem; color: var(--dim);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-r { background: var(--red); } .dot-y { background: var(--yellow); } .dot-g { background: var(--green); }
+    .mockup-body { padding: 1.5rem; min-height: 180px; display: flex; flex-direction: column; gap: 0.75rem; }
+    .mockup-title { font-family: var(--font-head); font-size: 0.85rem; color: var(--cyan); }
+    .mockup-desc { font-size: 0.8rem; line-height: 1.6; color: var(--dim); }
+    .mockup-elements { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
+    .el-box {
+      height: 28px; border-radius: 2px; background: rgba(0,255,157,0.08);
+      border: 1px dashed rgba(0,255,157,0.3);
+      font-family: var(--font-mono); font-size: 0.62rem; color: var(--green);
+      padding: 0 0.6rem; display: flex; align-items: center;
+    }
+
+    /* ===== TEAM ===== */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
+    .team-card {
+      border: 1px solid var(--border); background: var(--card);
+      padding: 2rem; border-radius: 4px; position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .team-card:hover { border-color: var(--green); transform: translateY(-4px); }
+    .team-avatar {
+      width: 72px; height: 72px; border-radius: 4px;
+      background: linear-gradient(135deg, rgba(0,255,157,0.15), rgba(0,212,255,0.15));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin-bottom: 1.25rem;
+    }
+    .team-name {
+      font-family: var(--font-head); font-size: 1rem; color: #fff; margin-bottom: 0.25rem;
+    }
+    .team-role {
+      font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan);
+      letter-spacing: 0.1em; margin-bottom: 1rem;
+    }
+    .team-bio { font-size: 0.88rem; line-height: 1.7; color: var(--text); margin-bottom: 1rem; }
+    .team-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-family: var(--font-mono); font-size: 0.65rem; color: var(--green);
+      border: 1px solid rgba(0,255,157,0.25); background: rgba(0,255,157,0.05);
+      padding: 0.2rem 0.55rem; border-radius: 2px;
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline { position: relative; padding-left: 2rem; margin-top: 2.5rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, var(--cyan), transparent);
+    }
+    .tl-item {
+      position: relative; padding-bottom: 2.5rem; padding-left: 1.5rem;
+    }
+    .tl-item::before {
+      content: ''; position: absolute; left: -2.35rem; top: 0.25rem;
+      width: 10px; height: 10px; border-radius: 50%; background: var(--bg);
+      border: 2px solid var(--cyan);
+    }
+    .tl-week {
+      font-family: var(--font-mono); font-size: 0.68rem; color: var(--cyan);
+      letter-spacing: 0.15em; margin-bottom: 0.3rem;
+    }
+    .tl-item h4 { font-family: var(--font-head); font-size: 0.88rem; color: #fff; margin-bottom: 0.35rem; }
+    .tl-item p { font-size: 0.85rem; color: var(--dim); line-height: 1.6; }
+
+    /* ===== SOCIAL IMPACT ===== */
+    .impact-section { background: var(--bg2); }
+    .impact-stats { display: flex; gap: 2rem; margin: 2.5rem 0; flex-wrap: wrap; }
+    .stat {
+      flex: 1; min-width: 160px;
+      border-left: 2px solid var(--green); padding-left: 1.25rem;
+    }
+    .stat-num {
+      font-family: var(--font-head); font-size: 2rem; font-weight: 900;
+      color: var(--green); display: block;
+    }
+    .stat-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim); letter-spacing: 0.1em; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border); padding: 3rem 2rem;
+      text-align: center; background: var(--bg);
+    }
+    .footer-logo { font-family: var(--font-head); font-size: 1.2rem; color: var(--green); margin-bottom: 0.75rem; }
+    .footer-sub { font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim); letter-spacing: 0.15em; }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(24px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.25s; }
+    .delay-3 { animation-delay: 0.4s; }
+    .delay-4 { animation-delay: 0.55s; }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Cyber<span>Detective</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#gameplay">Gameplay</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#prototype">Prototype</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="about">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div style="position:relative; z-index:2;">
+    <div class="badge fade-up">// CYBERSECURITY EDUCATION GAME //</div>
+    <h1 class="fade-up delay-1">CYBER<span class="accent">DETECTIVE</span></h1>
+    <p class="hero-sub fade-up delay-2">Uncover the Truth. Learn to Protect Yourself.</p>
+    <p class="hero-desc fade-up delay-3">
+      An educational detective game built with Pygame where you solve real-world cybercrime scenarios — 
+      phishing attacks, account hacks, social engineering — and learn to defend against them in the process.
+    </p>
+    <div class="cta-row fade-up delay-4">
+      <a href="#gameplay" class="btn btn-primary">Start Investigation</a>
+      <a href="#team" class="btn btn-secondary">Meet the Team</a>
+    </div>
+  </div>
+  <div class="terminal-tag">Pygame · Python · Cybersecurity Education · Open Source</div>
+</header>
+
+<!-- PROJECT DESCRIPTION -->
+<section id="gameplay">
+  <div class="container">
+    <div class="section-label">01 — Project Description</div>
+    <h2>What is <span>CyberDetective</span>?</h2>
+    <p class="lead">
+      CyberDetective is a point-and-click educational detective game that teaches players how cybercriminals operate —
+      and more importantly, how to stop them. Players investigate digital crimes, analyze evidence, and make
+      decisions that mirror real-life cybersecurity concepts.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Point-and-Click Investigation</h3>
+        <p>Explore crime scenes like a victim's computer, office, or café. Search for digital footprints — suspicious emails, hidden files, and compromised links — instead of physical clues.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>Cybersecurity Mini-Games</h3>
+        <p>Break passwords through logic puzzles. Identify phishing emails by spotting red flags. Trace IP addresses through an in-game dark web simulation. Every mechanic teaches a real skill.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📧</div>
+        <h3>Phishing Detection Training</h3>
+        <p>Receive fake emails and decide: safe or scam? Players learn to recognise manipulative language, spoofed sender addresses, and urgent-request patterns used in real attacks.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Why This Problem Matters</h3>
+        <p>Cyberattacks cost individuals and organisations billions each year. Teenagers and elderly users are the most vulnerable. Our game makes digital literacy engaging and accessible — not a boring lecture.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY / PLOT -->
+<section class="story-section">
+  <div class="container">
+    <div class="section-label">02 — Starter Level Plot</div>
+    <div class="story-grid">
+      <div>
+        <h2>Case #001 — <span>The Stolen Account</span></h2>
+        <p class="lead" style="font-size:0.95rem;">
+          A panicked user contacts you: their account has been hacked and someone is demanding a ransom.
+          You have 24 in-game hours to trace the attacker before they vanish.
+        </p>
+        <div class="story-steps">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div class="step-text">
+              <h4>Inspect the Victim's Computer</h4>
+              <p>Examine browser history, downloaded files, and email inbox for the point of entry.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <div class="step-text">
+              <h4>Find the Phishing Email</h4>
+              <p>Locate the fraudulent email the hacker used. Identify the fake domain and social engineering tactic.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <div class="step-text">
+              <h4>Track the Attacker</h4>
+              <p>Follow IP logs and anonymous nicknames through a simulated dark-web dialogue system.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">04</div>
+            <div class="step-text">
+              <h4>File the Report</h4>
+              <p>Compile your evidence correctly — only a complete, accurate report leads to an arrest.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="case-file">
+          <div class="case-file-header">
+            <span>🔴 ACTIVE CASE</span>
+            <span>FILE #2024-CC-001</span>
+          </div>
+          <h3>Evidence Board</h3>
+          <p>Items discovered during the investigation. Handle with care — one wrong conclusion and the hacker walks free.</p>
+          <ul class="evidence-list">
+            <li>Phishing email from "bank-secure-login[.]ru"</li>
+            <li>Clicked link — credential harvester form</li>
+            <li>Login at 03:47 AM from Almaty, KZ</li>
+            <li>Ransom note sent via Telegram bot</li>
+            <li>Hashed password found in darknet dump</li>
+            <li>VPN exit node traced to offshore server</li>
+            <li>Typing pattern analysis — suspect profile</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNCTIONAL REQUIREMENTS -->
+<section id="requirements">
+  <div class="container">
+    <div class="section-label">03 — Functional Requirements</div>
+    <h2>What the Game <span>Must Do</span></h2>
+    <p class="lead">Core features required for the game to function as intended.</p>
+    <div class="req-grid">
+      <div class="req-group">
+        <h4>Gameplay Systems</h4>
+        <div class="req-item"><span class="req-check">✓</span><p>Player can navigate between multiple in-game locations (room, office, café)</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Clickable objects reveal clues, descriptions, and evidence items</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Inventory system to collect and review gathered evidence</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Decision tree dialogue system for NPC interactions</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Scoring system based on speed and correctness of decisions</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Case report builder — player submits evidence to solve the case</p></div>
+      </div>
+      <div class="req-group">
+        <h4>Educational Features</h4>
+        <div class="req-item"><span class="req-check">✓</span><p>Phishing email mini-game — identify real vs fake messages</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Password logic puzzle mini-game</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>In-game glossary with cybersecurity terms</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Post-level summary: what the attack was and how to prevent it</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Multiple difficulty levels (beginner to advanced)</p></div>
+        <div class="req-item"><span class="req-check">✓</span><p>Player progress saved between sessions</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNICAL REQUIREMENTS -->
+<section style="background: var(--bg2);">
+  <div class="container">
+    <div class="section-label">04 — Technical Requirements</div>
+    <h2>How It's <span>Built</span></h2>
+    <p class="lead">Technologies and tools chosen for development.</p>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <h4>🐍 Core Language</h4>
+        <span class="tech-pill">Python 3.11+</span>
+        <span class="tech-pill">OOP Architecture</span>
+      </div>
+      <div class="tech-card">
+        <h4>🎮 Game Engine</h4>
+        <span class="tech-pill">Pygame 2.x</span>
+        <span class="tech-pill">Pygame GUI</span>
+      </div>
+      <div class="tech-card">
+        <h4>💾 Data Storage</h4>
+        <span class="tech-pill">JSON Save Files</span>
+        <span class="tech-pill">SQLite (optional)</span>
+      </div>
+      <div class="tech-card">
+        <h4>🎨 Art & Assets</h4>
+        <span class="tech-pill">Pixel Art Sprites</span>
+        <span class="tech-pill">Aseprite</span>
+        <span class="tech-pill">GIMP</span>
+      </div>
+      <div class="tech-card">
+        <h4>🔧 Dev Tools</h4>
+        <span class="tech-pill">Git</span>
+        <span class="tech-pill">VS Code</span>
+        <span class="tech-pill">PyInstaller</span>
+      </div>
+      <div class="tech-card">
+        <h4>☁️ Hosting</h4>
+        <span class="tech-pill">GitHub Repository</span>
+        <span class="tech-pill">GitHub Pages</span>
+        <span class="tech-pill">itch.io</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROTOTYPE / SKETCHES -->
+<section class="prototype-section" id="prototype">
+  <div class="container">
+    <div class="section-label">05 — Prototype Design</div>
+    <h2>Screen <span>Sketches</span></h2>
+    <p class="lead">Early wireframe designs for the core game screens.</p>
+    <div class="mockup-grid">
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          main_menu.py
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-title">Main Menu</div>
+          <div class="mockup-desc">Animated terminal-style title screen with glitch effects. CRT monitor framing. Background shows corrupted data streams.</div>
+          <div class="mockup-elements">
+            <div class="el-box">[ NEW CASE ]</div>
+            <div class="el-box">[ CONTINUE ]</div>
+            <div class="el-box">[ GLOSSARY ]</div>
+            <div class="el-box">[ QUIT ]</div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          scene_room.py
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-title">Victim's Room</div>
+          <div class="mockup-desc">Point-and-click environment. Hotspots glow when hovered. Inventory bar at bottom. Dialogue box overlays for clue reveals.</div>
+          <div class="mockup-elements">
+            <div class="el-box">[ COMPUTER ]</div>
+            <div class="el-box">[ PHONE ]</div>
+            <div class="el-box">[ DOCUMENTS ]</div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          minigame_phish.py
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-title">Phishing Mini-Game</div>
+          <div class="mockup-desc">Player reviews an email. Must identify 3 red flags. Timer adds pressure. Correct answers trigger an educational popup.</div>
+          <div class="mockup-elements">
+            <div class="el-box">[ SAFE ✓ ]</div>
+            <div class="el-box">[ PHISHING ✗ ]</div>
+            <div class="el-box">[ HINT? ]</div>
+          </div>
+        </div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          scene_report.py
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-title">Case Report Screen</div>
+          <div class="mockup-desc">Player drags collected evidence into a report template. Only complete reports with correct items lead to a successful arrest.</div>
+          <div class="mockup-elements">
+            <div class="el-box">[ SUBMIT ]</div>
+            <div class="el-box">[ EVIDENCE ]</div>
+            <div class="el-box">[ REVIEW ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="section-label">06 — About the Authors</div>
+    <h2>The <span>Team</span></h2>
+    <p class="lead">Two developers passionate about cybersecurity education and game development.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👨‍💻</div>
+        <div class="team-name">Yessenboldy Akmadi</div>
+        <div class="team-role">// Lead Developer & Game Designer</div>
+        <p class="team-bio">
+          Responsible for core game architecture, Pygame engine implementation, and overall game design.
+          Passionate about building interactive systems that make complex topics accessible. Motivated by
+          the growing threat of cybercrime in Kazakhstan and across Central Asia.
+        </p>
+        <div class="team-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Pygame</span>
+          <span class="tag">Game Design</span>
+          <span class="tag">OOP</span>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🎨</div>
+        <div class="team-name">Zharaskan Tair</div>
+        <div class="team-role">// UI/UX Designer & Researcher</div>
+        <p class="team-bio">
+          Handles visual design, pixel art assets, level writing, and cybersecurity content research.
+          Ensures that every game mechanic is grounded in real attack techniques and defences.
+          Motivated to protect vulnerable users — especially elderly people — from online scams.
+        </p>
+        <div class="team-tags">
+          <span class="tag">UI Design</span>
+          <span class="tag">Pixel Art</span>
+          <span class="tag">Research</span>
+          <span class="tag">Storytelling</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL IMPACT -->
+<section class="impact-section">
+  <div class="container">
+    <div class="section-label">07 — Social Impact</div>
+    <h2>Why This <span>Matters</span></h2>
+    <p class="lead">CyberDetective isn't just a game — it's a tool for protecting people in the real world.</p>
+    <div class="impact-stats">
+      <div class="stat"><span class="stat-num">3.5B</span><span class="stat-label">Phishing attacks per year globally</span></div>
+      <div class="stat"><span class="stat-num">72%</span><span class="stat-label">Of attacks target individuals, not corporations</span></div>
+      <div class="stat"><span class="stat-num">60%</span><span class="stat-label">Of victims had no cybersecurity education</span></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧑‍🎓</div>
+        <h3>Primary Audience</h3>
+        <p>Teenagers (13–18) and elderly adults (65+) — the groups most frequently targeted by cybercriminals and with the least formal cybersecurity education.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Learning Through Play</h3>
+        <p>Research shows game-based learning improves retention by up to 90% compared to passive instruction. Players remember what they experience, not what they read.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>Open Source & Free</h3>
+        <p>The game will be free to play and open source. Schools and community centres in Kazakhstan and beyond can use it as a free digital literacy resource.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="container">
+    <div class="section-label">08 — Development Timeline</div>
+    <h2>Road<span>map</span></h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-week">WEEK 1–2</div>
+        <h4>Concept & Prototyping</h4>
+        <p>Finalise game concept, define cybersecurity topics per level, create basic Pygame window and navigation skeleton, design initial wireframes.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">WEEK 3–4</div>
+        <h4>Core Systems Development</h4>
+        <p>Build scene manager, inventory system, NPC dialogue engine, and point-and-click interaction framework.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">WEEK 5–6</div>
+        <h4>Level 1 + Mini-Games</h4>
+        <p>Implement Level 1 (account hack case), phishing mini-game, and password puzzle. Begin pixel art for assets.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">WEEK 7–8</div>
+        <h4>Polish, Testing & Launch</h4>
+        <p>Bug fixing, UI polish, add educational popups and glossary, deploy to itch.io, upload to GitHub, publish homepage.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">FUTURE</div>
+        <h4>Planned Improvements</h4>
+        <p>Additional cases (social engineering, ransomware, identity theft), multiplayer co-op mode, mobile port, multilingual support (Russian, Kazakh, English), and integration with school curriculum materials.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CyberDetective</div>
+  <p class="footer-sub">// Yessenboldy Akmadi & Zharaskan Tair — 2024 — Digital Literacy for Everyone //</p>
+</footer>
+
+<script>
+  // Intersection Observer for fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'none';
+        entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .step, .team-card, .tl-item, .tech-card, .mockup-frame, .req-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
