@@ -296,6 +296,32 @@
       padding: 0 0.6rem; display: flex; align-items: center;
     }
 
+    .development-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .placeholder-box {
+      background: rgba(0,212,255,0.04); border: 1px dashed rgba(0,212,255,0.25);
+      border-radius: 4px; padding: 1.75rem; min-height: 180px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      color: var(--dim); text-align: center;
+    }
+    .placeholder-box strong { color: var(--cyan); display: block; margin-top: 0.75rem; }
+    .screenshot-frame {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      padding: 1rem; background: rgba(0,0,0,0.35); border-radius: 4px;
+    }
+    .alpha-image {
+      width: 100%; height: auto; border-radius: 4px; border: 1px solid rgba(0,212,255,0.2);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+    .alpha-caption {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--dim);
+      text-align: center;
+    }
+    .reflection-grid { display: grid; gap: 1rem; margin-top: 1.75rem; }
+    .reflection-item {
+      border: 1px solid var(--border); background: var(--card); border-radius: 4px;
+      padding: 1.25rem;
+    }
+
     /* ===== TEAM ===== */
     .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
     .team-card {
@@ -404,6 +430,7 @@
     <li><a href="#gameplay">Gameplay</a></li>
     <li><a href="#requirements">Requirements</a></li>
     <li><a href="#prototype">Prototype</a></li>
+    <li><a href="#development">Development</a></li>
     <li><a href="#sponsor">Sponsor</a></li>
     <li><a href="#team">Team</a></li>
     <li><a href="#timeline">Timeline</a></li>
@@ -992,10 +1019,124 @@
   </div>
 </section>
 
+<!-- DEVELOPMENT PROCESS -->
+<section id="development" style="background: var(--bg);">
+  <div class="container">
+    <div class="section-label">06 — Development Process</div>
+    <h2>Alpha → Beta → <span>Final</span></h2>
+    <p class="lead">Отчёт о развитии проекта: как он вырос от начальной версии до завершённой концепции.</p>
+
+    <h3>Version Timeline</h3>
+    <div class="development-grid">
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <span style="margin-left:0.5rem;">Alpha v0.1</span>
+        </div>
+        <div class="screenshot-frame">
+          <img src="alpha-screenshot-1.png" alt="Alpha main menu screenshot" class="alpha-image" />
+          <img src="alpha-screenshot-2.png" alt="Alpha gameplay screenshot" class="alpha-image" />
+          <div class="alpha-caption">Ранние рабочие экраны Alpha v0.1 — главное меню и первый случай.</div>
+        </div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <span style="margin-left:0.5rem;">Beta v0.2</span>
+        </div>
+        <div class="screenshot-frame">
+          <img src="beta-screenshot-1.png" alt="Beta version main screen" class="alpha-image" />
+          <img src="beta-screenshot-2.png" alt="Beta version select case screen" class="alpha-image" />
+          <div class="alpha-caption">Рабочие экраны Beta версии — главное меню и выбор дела.</div>
+        </div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <span style="margin-left:0.5rem;">Final v1.2</span>
+        </div>
+        <div class="screenshot-frame">
+          <img src="final-screenshot-1.png" alt="Final version main screen" class="alpha-image" />
+          <img src="final-screenshot-2.png" alt="Final version second screen" class="alpha-image" />
+          <div class="alpha-caption">Финальные экраны Final версии — готовый интерфейс и кейс.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2.5rem;">Feedback Evidence</h3>
+    <div class="development-grid">
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <span style="margin-left:0.5rem;">Sponsor Interview</span>
+        </div>
+        <div class="placeholder-box">
+          <strong>Видео интервью</strong>
+          <p>Ссылки на интервью спонсора:</p>
+          <ul style="list-style:none; margin:1rem 0 0; padding:0; text-align:left;">
+            <li><a href="https://drive.google.com/file/d/1lTt_ZwSdxy5VCUkU4umtSknc8BNlcWn9/view" target="_blank" rel="noreferrer noopener" style="color:var(--cyan);">Interview Video 1</a></li>
+            <li><a href="https://drive.google.com/file/d/14R9x2UH-eXnvxElDbUxSPsfZ5VXcuAgR/view" target="_blank" rel="noreferrer noopener" style="color:var(--cyan);">Interview Video 2</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+          <span style="margin-left:0.5rem;">User Testing</span>
+        </div>
+        <div class="placeholder-box">
+          <strong>Тестирование пользователей</strong>
+          <p>Видео-отчёты о тестировании пользователей:</p>
+          <ul style="list-style:none; margin:1rem 0 0; padding:0; text-align:left;">
+            <li><a href="https://drive.google.com/file/d/1z4sgv2IaOiQzyslZKXH4Bb5epcm2aMH8/view" target="_blank" rel="noreferrer noopener" style="color:var(--cyan);">User Testing Video 1</a></li>
+            <li><a href="https://drive.google.com/file/d/1g2G83Di3o0HSO9xdHQ2Sq-2SnsgXQUrF/view" target="_blank" rel="noreferrer noopener" style="color:var(--cyan);">User Testing Video 2</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2.5rem;">Evidence of Development</h3>
+    <div class="development-grid">
+      <div class="placeholder-box" style="min-height:220px;">
+        <strong>Code Snippets</strong>
+        <img src="code-snippet.png" alt="Code snippet screenshot" class="alpha-image" style="margin-top:1rem;" />
+        <p style="margin-top:0.9rem;">Скриншот реального блока кода из финальной версии проекта.</p>
+      </div>
+      <div class="placeholder-box" style="min-height:220px; padding:0; border:none; background:transparent; box-shadow:none;">
+        <div class="screenshot-frame" style="background:rgba(0,0,0,0.22); border:1px solid rgba(0,212,255,0.15);">
+          <img src="assets/alpha-screenshot-2.png" alt="Alpha version second screenshot" class="alpha-image" />
+          <img src="assets/final-screenshot-2.png" alt="Final version second screenshot" class="alpha-image" />
+          <div class="alpha-caption">Сравнение «до / после»: второй вариант Alpha против второго варианта Final.</div>
+        </div>
+      </div>
+      <div class="placeholder-box" style="min-height:220px;">
+        <strong>Tools Used</strong>
+        <p>Python, Pygame, VS Code, Git и Aseprite — инструменты, которые использовались в разработке.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2.5rem;">Final Reflection</h3>
+    <div class="reflection-grid">
+      <div class="reflection-item">
+        <strong>Что улучшилось больше всего от Alpha до Final?</strong>
+        <p>Игровой процесс стал более понятным: от базовых кликов до сюжетных кейсов, отзывчивого интерфейса и образовательных подсказок.</p>
+      </div>
+      <div class="reflection-item">
+        <strong>Какой отзыв был самым полезным?</strong>
+        <p>Обратная связь по удобству интерфейса и пояснениям к мини-игре помогла сделать игру понятнее для новых игроков.</p>
+      </div>
+      <div class="reflection-item">
+        <strong>Что ещё можно улучшить?</strong>
+        <p>Добавить больше разнообразных кейсов, адаптивный интерфейс и дополнительные объяснения по каждому типу кибератаки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- SPONSOR INTERVIEW -->
 <section id="sponsor" style="background: var(--bg2);">
   <div class="container">
-    <div class="section-label">06 — Sponsor Interview</div>
+    <div class="section-label">07 — Sponsor Interview</div>
     <h2>Interview with Our <span>Sponsor</span></h2>
     <p class="lead">Наш спонсор — Асылхан Жарасқан, отец участника команды Жарасқана Таира. Мы взяли у него интервью, чтобы получить честную обратную связь от человека, который лично наблюдал за развитием проекта с самого начала.</p>
 
